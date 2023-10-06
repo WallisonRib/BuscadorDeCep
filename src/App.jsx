@@ -8,12 +8,17 @@ function App() {
   const [entrada, setInput] = useState('')
   const [cep, setCep] = useState('');
 
-  async function handleSearch() {
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }
+
+  const handleSearch = async (e)=> {
     if (entrada == '') {
       alert("Digite algum cep para continuar");
       return;
     }
-
     try {
       const response = await api.get(`${entrada}/json`)
       setCep(response.data)
@@ -37,7 +42,9 @@ function App() {
             type="text"
             placeholder='Digite seu CEP aqui'
             value={entrada}
-            onChange={(e) => setInput(e.target.value)} />
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            />
           <button className='buttonSearch' onClick={handleSearch}><FiSearch size={25} color='white' />
           </button>
         </div>
